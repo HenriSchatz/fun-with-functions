@@ -33,4 +33,9 @@ public final class Functions {
     public static <A, B, C> Function<B, Function<A, C>> flip(Function<A, Function<B, C>> f) {
         return (b) -> (a) -> f.apply(a).apply(b);
     }
+
+    public static Unit print(Object msg) {
+        System.out.println(msg);
+        return Unit.get();
+    }
 }

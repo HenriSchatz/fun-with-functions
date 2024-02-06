@@ -1,5 +1,6 @@
 package org.example.functionalstuff.shared.option;
 
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Objects;
@@ -27,6 +28,12 @@ public final class Just<A> implements Option<A> {
     @Override
     public <B> Option<B> bind(Function<A, Option<B>> f) {
         return f.apply(value);
+    }
+
+    @Nullable
+    @Override
+    public A orNull() {
+        return value;
     }
 
     public A get() {

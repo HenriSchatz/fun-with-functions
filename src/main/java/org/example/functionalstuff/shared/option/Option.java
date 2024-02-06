@@ -1,5 +1,7 @@
 package org.example.functionalstuff.shared.option;
 
+import jakarta.annotation.Nullable;
+
 import java.util.function.Function;
 
 public sealed interface Option<A> permits Just, Nothing {
@@ -12,4 +14,7 @@ public sealed interface Option<A> permits Just, Nothing {
     <B> Option<B> applyTo(Option<Function<A, B>> f);
 
     <B> Option<B> bind(Function<A, Option<B>> f);
+
+    @Nullable
+    A orNull();
 }

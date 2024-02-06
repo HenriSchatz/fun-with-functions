@@ -23,6 +23,10 @@ public class Age {
         this.asInt = asInt;
     }
 
+    public int asInt() {
+        return asInt;
+    }
+
     @Override
     public String toString() {
         return "Age[%d]".formatted(asInt);

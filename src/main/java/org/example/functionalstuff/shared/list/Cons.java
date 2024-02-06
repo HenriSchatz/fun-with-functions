@@ -1,11 +1,13 @@
 package org.example.functionalstuff.shared.list;
 
 import lombok.RequiredArgsConstructor;
+import org.example.functionalstuff.shared.Unit;
 import org.example.functionalstuff.shared.option.Just;
 import org.example.functionalstuff.shared.option.Option;
 
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 @RequiredArgsConstructor
 public final class Cons<A> implements List<A> {
@@ -32,6 +34,19 @@ public final class Cons<A> implements List<A> {
         );
     }
 
+    @Override
+    public <B> B fold(Function<A, Function<B, B>> f, B start) {
+        var acc = f.apply(head).apply(start);
+        return tail.fold(f, acc);
+    }
+
+    @Override
+    public Unit foreach(Function<A, ?> f) {
+        f.apply(head);
+        tail.foreach(f);
+        return Unit.get();
+    }
+
     public A head() {
         return head;
     }
@@ -51,6 +66,21 @@ public final class Cons<A> implements List<A> {
     @Override
     public <B> List<B> bind(Function<A, List<B>> f) {
         return f.apply(head).concatWith(tail.bind(f));
+    }
+
+    @Override
+    public Option<A> find(Predicate<A> predicate) {
+        return predicate.test(head) ? new Just<>(head) : tail.find(predicate);
+    }
+
+    @Override
+    public boolean any(Predicate<A> predicate) {
+        return predicate.test(head) || tail.any(predicate);
+    }
+
+    @Override
+    public List<A> filter(Predicate<A> predicate) {
+        return predicate.test(head) ? new Cons<>(head, tail.filter(predicate)) : tail.filter(predicate);
     }
 
     @Override

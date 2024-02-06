@@ -1,36 +1,27 @@
 package org.example.functionalstuff;
 
-import org.example.functionalstuff.shared.list.Cons;
-import org.example.functionalstuff.shared.list.Empty;
-import org.example.functionalstuff.shared.list.List;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.example.functionalstuff.adapter.file.FilePersonStorage;
+import org.example.functionalstuff.application.CreatePerson;
+import org.example.functionalstuff.application.GetAllPeople;
+import org.example.functionalstuff.domain.CreatePersonRequest;
+import org.example.functionalstuff.domain.PersonStorage;
+import org.example.functionalstuff.shared.Functions;
 
-import java.util.function.Function;
-
-import static org.example.functionalstuff.shared.Functions.stringify;
-
-@SpringBootApplication
 public class FunctionalStuffApplication {
 
     public static void main(String[] args) {
-        Function<Integer, List<Integer>> replicate3 = i -> replicate(i, 3);
-        var result = interval(0, 5).bind(replicate3);
-        System.out.println(stringify(result));
-    }
+        PersonStorage storage = new FilePersonStorage();
+        CreatePerson createPerson = new CreatePerson(storage);
+        GetAllPeople getAllPeople = new GetAllPeople(storage);
 
-    private static List<Integer> replicate(int i, int times) {
-        if (times <= 0) {
-            return new Empty<>();
-        }
+        var r1 = new CreatePersonRequest("John", "Doe", 42);
+        var r2 = new CreatePersonRequest("Johannes", "Schmohannes", 0);
 
-        return new Cons<>(i, replicate(i, times - 1));
-    }
+        createPerson.invoke(r1)
+                .fold(Functions::print, Functions::print);
+        createPerson.invoke(r2)
+                .fold(Functions::print, Functions::print);
 
-    private static List<Integer> interval(int start, int end) {
-        if (start >= end) {
-            return new Empty<>();
-        }
-
-        return new Cons<>(start, interval(start + 1, end));
+        getAllPeople.invoke().foreach(Functions::print);
     }
 }

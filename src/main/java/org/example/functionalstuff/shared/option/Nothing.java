@@ -1,5 +1,7 @@
 package org.example.functionalstuff.shared.option;
 
+import jakarta.annotation.Nullable;
+
 import java.util.function.Function;
 
 public final class Nothing<A> implements Option<A> {
@@ -16,6 +18,12 @@ public final class Nothing<A> implements Option<A> {
     @Override
     public <B> Option<B> bind(Function<A, Option<B>> f) {
         return new Nothing<>();
+    }
+
+    @Nullable
+    @Override
+    public A orNull() {
+        return null;
     }
 
     @Override

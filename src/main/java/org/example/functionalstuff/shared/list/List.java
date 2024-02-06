@@ -1,8 +1,10 @@
 package org.example.functionalstuff.shared.list;
 
+import org.example.functionalstuff.shared.Unit;
 import org.example.functionalstuff.shared.option.Option;
 
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 public sealed interface List<A> permits Cons, Empty {
 
@@ -17,4 +19,14 @@ public sealed interface List<A> permits Cons, Empty {
     <B> List<B> bind(Function<A, List<B>> f);
 
     List<A> concatWith(List<A> other);
+
+    Option<A> find(Predicate<A> predicate);
+
+    boolean any(Predicate<A> predicate);
+
+    List<A> filter(Predicate<A> predicate);
+
+    <B> B fold(Function<A, Function<B, B>> f, B start);
+
+    Unit foreach(Function<A, ?> f);
 }

@@ -1,6 +1,8 @@
 package org.example.functionalstuff.shared.either;
 
 import lombok.RequiredArgsConstructor;
+import org.example.functionalstuff.shared.option.Just;
+import org.example.functionalstuff.shared.option.Option;
 
 import java.util.Objects;
 import java.util.function.Function;
@@ -27,6 +29,16 @@ public final class Right<Error, A> implements Either<Error, A> {
     @Override
     public <B> Either<Error, B> bind(Function<A, Either<Error, B>> f) {
         return f.apply(value);
+    }
+
+    @Override
+    public Option<A> toOption() {
+        return new Just<>(value);
+    }
+
+    @Override
+    public <B> B fold(Function<Error, B> onLeft, Function<A, B> onRight) {
+        return onRight.apply(value);
     }
 
     public A get() {

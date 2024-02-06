@@ -6,7 +6,7 @@ import org.example.functionalstuff.domain.PersonStorage;
 import org.example.functionalstuff.shared.list.List;
 
 @RequiredArgsConstructor
-public class GetAllUsers {
+public class GetAllPeople {
 
     private final PersonStorage storage;
 

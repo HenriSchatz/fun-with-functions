@@ -1,5 +1,7 @@
 package org.example.functionalstuff.shared;
 
+import java.util.function.Function;
+
 public class Unit {
 
     private static Unit UNIT = null;
@@ -13,6 +15,10 @@ public class Unit {
     }
 
     private Unit() {
+    }
+
+    public <A> A andThen(Function<Unit, A> f) {
+        return f.apply(this);
     }
 
     @Override
