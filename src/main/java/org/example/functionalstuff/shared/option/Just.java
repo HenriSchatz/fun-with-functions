@@ -1,4 +1,4 @@
-package org.example.functionalstuff.functional.option;
+package org.example.functionalstuff.shared.option;
 
 import lombok.RequiredArgsConstructor;
 

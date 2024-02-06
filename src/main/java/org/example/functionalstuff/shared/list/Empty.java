@@ -1,8 +1,21 @@
-package org.example.functionalstuff.functional.list;
+package org.example.functionalstuff.shared.list;
+
+import org.example.functionalstuff.shared.option.Nothing;
+import org.example.functionalstuff.shared.option.Option;
 
 import java.util.function.Function;
 
 public final class Empty<A> implements List<A> {
+    @Override
+    public int size() {
+        return 0;
+    }
+
+    @Override
+    public Option<A> get(int index) {
+        return new Nothing<>();
+    }
+
     @Override
     public <B> List<B> fmap(Function<A, B> f) {
         return new Empty<>();

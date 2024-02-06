@@ -1,13 +1,17 @@
 package org.example.functionalstuff.domain;
 
-import org.example.functionalstuff.functional.either.Either;
-import org.example.functionalstuff.functional.either.Left;
+import jakarta.annotation.Nullable;
+import org.example.functionalstuff.shared.either.Either;
+import org.example.functionalstuff.shared.either.Left;
 
 public class Age {
     private static final Range ageRange = new Range(0, 150);
     private final int asInt;
 
-    public static Either<String, Age> create(int age) {
+    public static Either<String, Age> create(@Nullable Integer age) {
+        if (age == null) {
+            return new Left<>("Age must not be null");
+        }
         if (!ageRange.contains(age)) {
             return new Left<>("Age %d not in range %s".formatted(age, ageRange));
         }

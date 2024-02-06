@@ -1,11 +1,13 @@
 package org.example.functionalstuff;
 
-import org.example.functionalstuff.functional.list.Cons;
-import org.example.functionalstuff.functional.list.Empty;
-import org.example.functionalstuff.functional.list.List;
+import org.example.functionalstuff.shared.list.Cons;
+import org.example.functionalstuff.shared.list.Empty;
+import org.example.functionalstuff.shared.list.List;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.function.Function;
+
+import static org.example.functionalstuff.shared.Functions.stringify;
 
 @SpringBootApplication
 public class FunctionalStuffApplication {
@@ -13,7 +15,7 @@ public class FunctionalStuffApplication {
     public static void main(String[] args) {
         Function<Integer, List<Integer>> replicate3 = i -> replicate(i, 3);
         var result = interval(0, 5).bind(replicate3);
-        System.out.println(result);
+        System.out.println(stringify(result));
     }
 
     private static List<Integer> replicate(int i, int times) {

@@ -1,4 +1,4 @@
-package org.example.functionalstuff.functional.either;
+package org.example.functionalstuff.shared.either;
 
 import java.util.function.Function;
 

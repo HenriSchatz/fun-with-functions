@@ -1,14 +1,18 @@
 package org.example.functionalstuff.domain;
 
-import org.example.functionalstuff.functional.either.Either;
-import org.example.functionalstuff.functional.either.Left;
+import jakarta.annotation.Nullable;
+import org.example.functionalstuff.shared.either.Either;
+import org.example.functionalstuff.shared.either.Left;
 
 import java.util.Objects;
 
 public class Name {
     private final String asString;
 
-    public static Either<String, Name> create(String name) {
+    public static Either<String, Name> create(@Nullable String name) {
+        if (name == null || name.isEmpty()) {
+            return new Left<>("name must not be empty");
+        }
         if (name.isBlank()) {
             return new Left<>("name must not be blank");
         }

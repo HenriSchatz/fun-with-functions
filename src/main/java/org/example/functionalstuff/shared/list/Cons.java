@@ -1,6 +1,8 @@
-package org.example.functionalstuff.functional.list;
+package org.example.functionalstuff.shared.list;
 
 import lombok.RequiredArgsConstructor;
+import org.example.functionalstuff.shared.option.Just;
+import org.example.functionalstuff.shared.option.Option;
 
 import java.util.Objects;
 import java.util.function.Function;
@@ -12,11 +14,30 @@ public final class Cons<A> implements List<A> {
     private final List<A> tail;
 
     @Override
+    public int size() {
+        return 1 + tail.size();
+    }
+
+    @Override
+    public Option<A> get(int index) {
+        if (index == 0) return new Just<>(head);
+        return tail.get(index - 1);
+    }
+
+    @Override
     public <B> List<B> fmap(Function<A, B> f) {
         return new Cons<>(
                 f.apply(head),
                 tail.fmap(f)
         );
+    }
+
+    public A head() {
+        return head;
+    }
+
+    public List<A> tail() {
+        return tail;
     }
 
     @Override
