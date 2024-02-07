@@ -11,27 +11,26 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicLong;
 
 public final class FilePersonStorage implements PersonStorage {
 
     private static final String path = "./personstorage.db";
+    private final AtomicLong currentId;
+
+    public FilePersonStorage() {
+        this.currentId = new AtomicLong(
+                findAll().fmap(Person::id)
+                        .fold(id -> maxId -> id > maxId ? id : maxId, 0L) + 1L
+        );
+    }
 
     @Override
     public Person save(SavePersonRequest request) {
-        var all = findAll();
-        var nextId = all.fmap(Person::id)
-                .fold(next -> acc -> next > acc ? next : acc, 1L)
-                + 1;
+        var nextId = currentId.getAndIncrement();
 
         var personToSave = new Person(nextId, request.firstName(), request.lastName(), request.age());
-
-        try(FileWriter writer = new FileWriter(path, true)) {
-            writer.write(writePerson(personToSave));
-            writer.write('\n');
-            writer.flush();
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
+        writeToFile(writePerson(personToSave) + '\n', true);
 
         return personToSave;
     }
@@ -49,13 +48,27 @@ public final class FilePersonStorage implements PersonStorage {
 
     @Override
     public void deleteById(Long id) {
-        throw new UnsupportedOperationException();
+        var newPeople = findAll()
+                .filter(p -> !p.id().equals(id))
+                .fmap(this::writePerson)
+                .fold(p -> acc -> acc + p + '\n', "");
+
+        writeToFile(newPeople, false);
     }
 
     @Override
     public List<Person> findAll() {
         return fileEntries()
                 .fmap(this::readPerson);
+    }
+
+    private void writeToFile(String s, boolean append) {
+        try (FileWriter writer = new FileWriter(path, append)) {
+            writer.write(s);
+            writer.flush();
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     private List<String> fileEntries() {

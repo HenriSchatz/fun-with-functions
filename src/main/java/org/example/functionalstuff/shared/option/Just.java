@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 @RequiredArgsConstructor
 public final class Just<A> implements Option<A> {
@@ -28,6 +29,11 @@ public final class Just<A> implements Option<A> {
     @Override
     public <B> Option<B> bind(Function<A, Option<B>> f) {
         return f.apply(value);
+    }
+
+    @Override
+    public <B> B fold(Supplier<B> onNothing, Function<A, B> onJust) {
+        return onJust.apply(value);
     }
 
     @Nullable

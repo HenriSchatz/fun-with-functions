@@ -3,6 +3,7 @@ package org.example.functionalstuff.shared.option;
 import jakarta.annotation.Nullable;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public final class Nothing<A> implements Option<A> {
     @Override
@@ -24,6 +25,11 @@ public final class Nothing<A> implements Option<A> {
     @Override
     public A orNull() {
         return null;
+    }
+
+    @Override
+    public <B> B fold(Supplier<B> onNothing, Function<A, B> onJust) {
+        return onNothing.get();
     }
 
     @Override
