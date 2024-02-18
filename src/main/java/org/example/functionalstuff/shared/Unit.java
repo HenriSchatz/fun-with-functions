@@ -1,6 +1,6 @@
 package org.example.functionalstuff.shared;
 
-import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class Unit {
 
@@ -17,8 +17,8 @@ public class Unit {
     private Unit() {
     }
 
-    public <A> A andThen(Function<Unit, A> f) {
-        return f.apply(this);
+    public <A> A andThen(Supplier<A> f) {
+        return f.get();
     }
 
     @Override

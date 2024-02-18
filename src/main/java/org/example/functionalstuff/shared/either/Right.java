@@ -41,6 +41,11 @@ public final class Right<Error, A> implements Either<Error, A> {
         return onRight.apply(value);
     }
 
+    @Override
+    public A onLeft(Function<Error, A> recover) {
+        return this.value;
+    }
+
     public A get() {
         return value;
     }

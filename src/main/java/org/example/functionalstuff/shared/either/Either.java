@@ -18,6 +18,8 @@ public sealed interface Either<Error, A> permits Left, Right {
 
     <B> B fold(Function<Error, B> onLeft, Function<A, B> onRight);
 
+    A onLeft(Function<Error, A> recover);
+
     default A orNull() {
         return toOption().orNull();
     }

@@ -1,16 +1,33 @@
 package org.example.functionalstuff.shared;
 
+import org.example.functionalstuff.shared.either.Either;
+import org.example.functionalstuff.shared.either.Left;
+import org.example.functionalstuff.shared.either.Right;
 import org.example.functionalstuff.shared.list.Cons;
 import org.example.functionalstuff.shared.list.Empty;
 import org.example.functionalstuff.shared.list.List;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public final class Functions {
 
     private Functions() {
         // no instance pls
+    }
+
+    public static <A> A id(A a) {
+        return a;
+    }
+
+    public static <A> Either<String, A> runCatching(Supplier<A> s) {
+        try {
+            return new Right<>(s.get());
+        } catch (Exception e) {
+            var msg = e.getMessage() == null ? "Error while running" : e.getMessage();
+            return new Left<>(msg);
+        }
     }
 
     public static String stringify(List<?> list) {

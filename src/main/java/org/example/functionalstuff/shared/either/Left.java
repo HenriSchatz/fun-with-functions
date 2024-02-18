@@ -37,6 +37,11 @@ public final class Left<Error, A> implements Either<Error, A> {
         return onLeft.apply(error);
     }
 
+    @Override
+    public A onLeft(Function<Error, A> recover) {
+        return recover.apply(error);
+    }
+
     public Error get() {
         return error;
     }
