@@ -13,12 +13,12 @@ public enum Command {
     private final String description;
 
     public static Option<Command> fromString(String s) {
-        return List.from(values())
+        return List.of(values())
                 .find(it -> it.asString.equalsIgnoreCase(s));
     }
 
     public static String formatted() {
-        return List.from(values())
+        return List.of(values())
                 .fmap(Command::formatted_)
                 .fold(s -> acc -> acc + s + '\n', "");
     }

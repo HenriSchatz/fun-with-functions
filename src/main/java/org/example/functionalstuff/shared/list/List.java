@@ -9,12 +9,13 @@ import java.util.function.Predicate;
 
 public sealed interface List<A> permits Cons, Empty {
 
-    static <A> List<A> from(A[] as) {
+    @SafeVarargs
+    static <A> List<A> of(A... as) {
         if (as.length == 0) return new Empty<>();
         A cur = as[0];
         A[] next = Arrays.copyOfRange(as, 1, as.length);
 
-        return new Cons<>(cur, from(next));
+        return new Cons<>(cur, of(next));
     }
 
     Option<A> get(int index);

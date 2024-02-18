@@ -1,27 +1,26 @@
 package org.example.functionalstuff;
 
-import org.example.functionalstuff.adapter.console.Console;
-import org.example.functionalstuff.adapter.file.FilePersonStorage;
-import org.example.functionalstuff.application.CreatePerson;
-import org.example.functionalstuff.application.DeletePersonById;
-import org.example.functionalstuff.application.FindPersonById;
-import org.example.functionalstuff.application.GetAllPeople;
-import org.example.functionalstuff.domain.PersonStorage;
+import org.example.functionalstuff.shared.Pair;
+
+import java.util.function.Function;
+
+import static org.example.functionalstuff.shared.Functions.compose;
 
 public class Main {
 
     public static void main(String[] args) {
-        PersonStorage storage = new FilePersonStorage();
-        GetAllPeople getAllPeople = new GetAllPeople(storage);
-        FindPersonById findPersonById = new FindPersonById(storage);
-        CreatePerson createPerson = new CreatePerson(storage);
-        DeletePersonById deletePersonById = new DeletePersonById(storage);
+        Function<Integer, Integer> times2 = i -> i * 2;
+        Function<Integer, Integer> pow = i -> i * i;
+        Function<Integer, Integer> inc = i -> i + 1;
+        Function<Integer, Integer> times2Plus1 = compose(inc, times2);
 
-        new Console(
-                createPerson,
-                getAllPeople,
-                deletePersonById,
-                findPersonById
-        ).run();
+        Function<Function<Integer, Integer>, Function<Integer, SomeRecord>> foo = f -> i ->
+                SomeRecord.constructor()
+                        .apply(f.apply(i))
+                        .apply("2")
+                        .apply(new Pair<>(3, "4"));
+
+        var bar = foo.apply(times2Plus1).apply(42);
+        System.out.println(bar);
     }
 }

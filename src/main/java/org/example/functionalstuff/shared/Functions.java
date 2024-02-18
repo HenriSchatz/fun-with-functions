@@ -17,6 +17,10 @@ public final class Functions {
         // no instance pls
     }
 
+    public static <A, B, C> Function<A, C> compose(Function<B, C> g, Function<A, B> f) {
+        return a -> g.apply(f.apply(a));
+    }
+
     public static <A> A id(A a) {
         return a;
     }

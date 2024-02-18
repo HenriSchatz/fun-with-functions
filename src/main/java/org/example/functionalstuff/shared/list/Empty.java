@@ -75,6 +75,6 @@ public final class Empty<A> implements List<A> {
 
     @Override
     public String toString() {
-        return "Empty";
+        return "()";
     }
 }

@@ -90,7 +90,7 @@ public final class Cons<A> implements List<A> {
 
     @Override
     public String toString() {
-        return "Cons[%s, %s]".formatted(head, tail);
+        return head + "->" + tail.toString();
     }
 
     @Override
